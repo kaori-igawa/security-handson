@@ -2,8 +2,16 @@ import express from "express";
 
 const router = express.Router();
 
+const allowlist = [
+  'http://localhost:3000',
+  'http://site.example:3000',
+];
+
 router.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
+  if (req.headers.origin && allowlist.includes(req.headers.origin)){
+    res.header('Access-Control-Allow-Origin', req.headers.origin);
+  }
+  
   if (req.method === 'OPTIONS') {
     res.header('Access-Control-Allow-Headers', 'X-Token');
   }
